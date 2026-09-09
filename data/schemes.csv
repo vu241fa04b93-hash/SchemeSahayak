@@ -1,0 +1,4 @@
+scheme_id,scheme_name,description,target_beneficiaries,business_types,states,official_source
+S001,Prime Minister's Employment Generation Programme (PMEGP),Credit-linked subsidy scheme for establishing new micro enterprises in manufacturing and service sectors,New entrepreneurs,"manufacturing,service",All India,Ministry of MSME/KVIC
+S002,Stand-Up India,Facilitates bank loans for setting up greenfield enterprises,SC/ST entrepreneurs and women entrepreneurs,"manufacturing,service,trading",All India,Stand-Up India
+S003,Credit Guarantee Fund Scheme for Micro and Small Enterprises (CGS-I),Provides credit guarantee coverage for eligible credit facilities extended to Micro and Small Enterprises,New and existing Micro and Small Enterprises,"manufacturing,service,trading,education/training",All India,CGTMSE
