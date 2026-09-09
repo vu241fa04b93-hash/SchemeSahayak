@@ -15,5 +15,7 @@ def test_chunker():
     print("\nNumber of chunks:", len(chunks))
 
     for i, chunk in enumerate(chunks[:3]):
-        print(f"\nChunk {i + 1}:")
-        print(chunk[:200])
+
+        print(f"\nCHUNK {i + 1}")
+        print("-" * 50)
+        print(chunk[:300])

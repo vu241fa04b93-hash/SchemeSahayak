@@ -1,10 +1,26 @@
 from pathlib import Path
+import re
+
 from pypdf import PdfReader
+
+
+def clean_text(text: str) -> str:
+    """
+    Clean extracted PDF text.
+    """
+
+    # Replace multiple spaces/tabs with one space
+    text = re.sub(r"[ \t]+", " ", text)
+
+    # Reduce excessive blank lines
+    text = re.sub(r"\n\s*\n+", "\n\n", text)
+
+    return text.strip()
 
 
 def load_pdf(file_path: str) -> str:
     """
-    Extract text from a PDF file.
+    Extract and clean text from a PDF file.
     """
 
     path = Path(file_path)
@@ -29,4 +45,6 @@ def load_pdf(file_path: str) -> str:
         if text:
             pages.append(text)
 
-    return "\n".join(pages)
+    full_text = "\n".join(pages)
+
+    return clean_text(full_text)
