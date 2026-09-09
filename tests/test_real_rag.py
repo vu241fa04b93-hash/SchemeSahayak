@@ -7,14 +7,15 @@ from rag.retriever import Retriever
 
 def test_real_scheme_retrieval():
 
+    # Change this to your actual PDF filename
     pdf_path = "scheme_documents/scheme1.pdf"
 
-    # Load PDF
+    # 1. Load PDF
     text = load_pdf(pdf_path)
 
     assert len(text) > 0
 
-    # Create chunks
+    # 2. Split into chunks
     chunks = chunk_text(text)
 
     assert len(chunks) > 0
@@ -22,44 +23,44 @@ def test_real_scheme_retrieval():
     print("\nTotal characters:", len(text))
     print("Total chunks:", len(chunks))
 
-    # Generate embeddings
+    # 3. Generate embeddings
     model = EmbeddingModel()
 
     embeddings = model.encode(chunks)
 
     print("Embedding shape:", embeddings.shape)
 
-    # Create vector store
+    # 4. Create FAISS vector store
     store = VectorStore(
         embeddings.shape[1]
     )
 
-    # Store chunks
     store.add(
         embeddings,
         chunks
     )
 
-    # Create retriever
+    # 5. Create retriever
     retriever = Retriever(
         model,
         store
     )
 
-    # Search
-    query = "Who is eligible for this scheme?"
-
+    # 6. Ask a question
     results = retriever.retrieve(
-        query,
+        "Who is eligible for this scheme?",
         top_k=3
     )
 
     assert len(results) > 0
 
+    # 7. Display retrieved information
     print("\nRELEVANT SCHEME INFORMATION")
 
     for i, result in enumerate(results):
 
         print(f"\nRESULT {i + 1}")
+
         print("Score:", result["score"])
+
         print(result["document"][:500])
