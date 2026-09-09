@@ -1,4 +1,22 @@
 from Finance.emi import calculate_emi, calculate_loan_details
+from Finance.rules import parse_financial_rule
+from database.database import get_financial_rules
+
+
+def get_scheme_financial_rules(scheme_id):
+    """
+    Fetch and parse financial rules for a scheme
+    from Supabase.
+    """
+
+    rules = get_financial_rules(scheme_id)
+
+    if not rules:
+        raise ValueError(
+            f"No financial rules found for scheme {scheme_id}"
+        )
+
+    return parse_financial_rule(rules[0])
 
 
 def calculate_finance(
@@ -90,7 +108,9 @@ def calculate_finance(
         "margin_requirement_met": margin_requirement_met,
         "finance_required": finance_required,
         "subsidy_percent": subsidy_percent,
-        "subsidy_amount": round(subsidy_amount, 2),
+        "subsidy_amount": round(
+            subsidy_amount, 2
+        ),
         "amount_after_subsidy": round(
             amount_after_subsidy, 2
         ),
@@ -105,6 +125,88 @@ def calculate_finance(
         "total_repayment": loan_details["total_repayment"],
         "total_interest": loan_details["total_interest"]
     }
+
+
+def calculate_finance_for_scheme(
+    scheme_id,
+    project_cost,
+    own_contribution,
+    subsidy_percent=None,
+    interest_rate=None,
+    tenure_months=None
+):
+    """
+    Calculate finance using financial rules retrieved
+    from Supabase for a specific scheme.
+
+    Note:
+    Some schemes contain ranges or descriptive values
+    instead of exact numeric subsidy/interest rates.
+    In those cases, the caller must provide the exact
+    numeric value when required.
+    """
+
+    rules = get_scheme_financial_rules(scheme_id)
+
+    # Use database value when it is a single numeric subsidy.
+    # If the database contains a range such as (15, 35),
+    # an exact value must be supplied by the caller.
+    if subsidy_percent is None:
+        db_subsidy = rules["subsidy_percent"]
+
+        if isinstance(db_subsidy, (int, float)):
+            subsidy_percent = db_subsidy
+        else:
+            subsidy_percent = 0
+
+    # Use database interest rate only when it is numeric.
+    # Descriptive values such as "Normal Bank Rate" become None.
+    if interest_rate is None:
+        interest_rate = rules["interest_rate"]
+
+    # EMI cannot be calculated from an unspecified interest rate.
+    # Use 0 so the existing calculator remains safe.
+    if interest_rate is None:
+        interest_rate_for_calculation = 0
+    else:
+        interest_rate_for_calculation = interest_rate
+
+    # Use database maximum tenure when available.
+    if tenure_months is None:
+        tenure_months = rules["maximum_tenure_months"]
+
+    if tenure_months is None:
+        tenure_months = 60
+
+    result = calculate_finance(
+        project_cost=project_cost,
+        own_contribution=own_contribution,
+        interest_rate=interest_rate_for_calculation,
+        tenure_months=tenure_months,
+        max_loan_amount=rules["max_loan_amount"],
+        subsidy_percent=subsidy_percent,
+        margin_percent=rules["margin_percent"] or 0
+    )
+
+    # Add scheme/database information
+    result["scheme_id"] = scheme_id
+    result["database_subsidy_percent"] = rules["subsidy_percent"]
+    result["database_interest_rate"] = rules["interest_rate"]
+    result["source_document"] = rules["source_document"]
+    result["source_page"] = rules["source_page"]
+    result["last_verified"] = rules["last_verified"]
+
+    # Tell the caller whether exact values were available.
+    result["interest_rate_available"] = (
+        rules["interest_rate"] is not None
+    )
+
+    result["subsidy_rate_exact"] = isinstance(
+        rules["subsidy_percent"],
+        (int, float)
+    )
+
+    return result
 
 
 def calculate_financial_feasibility(monthly_income, emi):
