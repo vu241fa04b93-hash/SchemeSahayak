@@ -1,0 +1,20 @@
+rule_id,scheme_id,rule_type,field,operator,value,description
+R001,S001,age,age,>=,18,Minimum age
+R002,S001,income,annual_income,none,,No income ceiling
+R003,S001,business_type,business_type,in,"manufacturing,service",Eligible sectors
+R004,S001,education,education,>=,8th,Required for higher project cost
+R005,S001,new_unit,is_new_unit,==,true,Only new units are eligible
+R006,S001,capital_expenditure,capital_expenditure,>,0,Projects must include capital expenditure
+R007,S001,government_subsidy,previous_subsidy,==,false,No previous government subsidy
+R008,S002,age,age,>=,18,Applicant must be at least 18 years old
+R009,S002,category,category,in,"SC,ST,Women",Applicant must be SC/ST or Woman entrepreneur
+R010,S002,business_type,business_type,in,"manufacturing,service,trading",Eligible business sectors
+R011,S002,enterprise_type,is_greenfield,==,true,Only greenfield enterprises are eligible
+R012,S002,ownership,ownership_percent,>=,51,Eligible applicant must hold at least 51% ownership and controlling stake
+R013,S002,loan_amount,loan_amount,>=,1000000,Minimum composite loan amount is ₹10 lakh
+R014,S002,loan_amount,loan_amount,<=,10000000,Maximum composite loan amount is ₹1 crore
+R015,S003,enterprise_status,enterprise_status,in,"new,existing",New or existing Micro and Small Enterprises are eligible
+R016,S003,enterprise_size,enterprise_size,in,"micro,small",Scheme covers Micro and Small Enterprises
+R017,S003,collateral,has_collateral,==,false,Credit facility is generally covered without collateral security
+R018,S003,third_party_guarantee,has_third_party_guarantee,==,false,Credit facility is generally covered without third party guarantee
+R019,S003,business_type,business_type,in,"manufacturing,service,trading,education/training",Eligible activities include manufacturing, services, trading and educational/training institutions

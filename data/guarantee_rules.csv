@@ -1,0 +1,4 @@
+guarantee_rule_id,scheme_id,lender_type,credit_limit,guarantee_coverage
+G001,S003,Public/Private/Foreign Banks,100000000,75-90%
+G002,S003,SFB/RRB/State Financial/Cooperative Banks,20000000,75-90%
+G003,S003,Microfinance Institutions,5000000,75-90%
