@@ -1,6 +1,7 @@
 from rag.scheme_registry import SchemeRegistry
 from rag.index_manager import SchemeIndexManager
 from rag.rag_service import answer_for_scheme
+from rag.scheme_loader import load_scheme_registry
 
 
 class SchemeSahayakAI:
@@ -12,10 +13,26 @@ class SchemeSahayakAI:
     directly handling embeddings, FAISS, or PDFs.
     """
 
-    def __init__(self, schemes=None):
-        self.registry = SchemeRegistry(
-            schemes=schemes
-        )
+    def __init__(
+        self,
+        schemes=None,
+        load_from_database=False
+    ):
+        # -------------------------------------------------
+        # Registry
+        # -------------------------------------------------
+
+        if load_from_database:
+            self.registry = load_scheme_registry()
+
+        else:
+            self.registry = SchemeRegistry(
+                schemes=schemes
+            )
+
+        # -------------------------------------------------
+        # Index manager
+        # -------------------------------------------------
 
         self.index_manager = SchemeIndexManager(
             registry=self.registry
