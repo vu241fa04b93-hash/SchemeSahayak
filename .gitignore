@@ -2,3 +2,4 @@
 __pycache__/
 .venv/
 rag_cache/
+test_rag_cache/
