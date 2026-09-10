@@ -1,0 +1,16 @@
+document_id,scheme_id,document_name,mandatory,description
+D001,S001,Aadhaar Card,yes,Identity proof
+D002,S001,PAN Card,yes,Identity verification
+D003,S001,Project Report,yes,Business project report
+D004,S001,Bank Account Details,yes,Bank account information
+D005,S001,Passport Size Photograph,yes,Applicant photograph
+D006,S001,Educational Qualification Certificate,conditional,Required for eligible project cost thresholds
+D007,S001,Caste Certificate,conditional,Applicable for reserved category applicants
+D008,S001,Residence Proof,yes,Address verification
+D009,S002,Aadhaar Card,yes,Identity proof
+D010,S002,PAN Card,yes,Permanent Account Number
+D011,S002,Caste Certificate,conditional,Required for SC/ST applicants
+D012,S002,Business Plan,yes,Detailed project report
+D013,S002,Bank Account Details,yes,Bank account information
+D014,S002,Address Proof,yes,Proof of residence
+D015,S002,Passport Size Photograph,yes,Applicant photograph

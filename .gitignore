@@ -1,5 +1,4 @@
 .env
 __pycache__/
-*.pyc
+.venv/
 rag_cache/
-test_rag_cache/
